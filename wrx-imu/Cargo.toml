@@ -1,0 +1,39 @@
+[package]
+name = "wrx-imu"
+version = "0.1.0"
+authors = ["davidlin"]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+[[bin]]
+name = "wrx-imu"
+test = false
+bench = false
+
+[dependencies]
+panic-halt = "1.0.0"
+ufmt = "0.2.0"
+nb = "1.1.0"
+embedded-hal = "0.2.7"
+lexical-core = { version = "1.0.6", default-features = false, features = ["parse-floats","write-floats","write-integers","format"] }
+bno080 = "0.1.3"
+ufloat = "0.1.0"
+mint = "0.5.9"
+
+[dependencies.arduino-hal]
+git = "https://github.com/rahix/avr-hal"
+rev = "e5c8f37fe48419956e722490a82b9ca9b9fc61a2"
+features = ["arduino-uno"]
+
+# Configure the build for minimal size - AVRs have very little program memory
+[profile.dev]
+panic = "abort"
+lto = true
+opt-level = "s"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+debug = true
+lto = true
+opt-level = "s"
